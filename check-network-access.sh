@@ -1,12 +1,18 @@
 #!/bin/bash
 
+# This script checks network access from container(s) in a Kubernetes cluster. The main purpose is to check effectiveness of network policies.
+# Connexion check uses ping, curl or wget, depending on tools present in each container.  
+# It is possible to target all containers in all pods in a namespace, all containers in a pod, or a specifc container.
+# By default it checks network access to all pod IP adresses of the cluster but it is possible to target a specific IP only.
+# Kubectl with exec command privilege is required. 
+
 print_usage(){
     echo "$0 -n <NAMESPACE> [-p <POD_NAME> [-c <CONTAINER_NAME>] [-i <IPs_TO_SCAN>]"
     echo "example: $0 -n kube-system -p kube-dns-848f988bc4-v7m26 -i \"127.0.0.1 10.101.5.4 10.101.5.6\""
     exit 0
 }
 
-# Check in container if tool can be use to scan: ping / curl 
+# Check in container if tool can be use to scan: ping / curl / wget
 # $1: namespace, $2: pod, $3 container
 select_scan_tool(){
     # Check ping
