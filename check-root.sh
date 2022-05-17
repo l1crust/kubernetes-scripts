@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This script checks if containers of a Kubernetes cluster are running as root. 
+# By default, check is made against all pods of the cluster but it is possible to target a specific namespace only. 
+# By default, check is made only against the default container of a pod but is is possible to check privileges of all containers in a pod using "-v" argument.
+
 CONTAINERS=0
 print_usage(){
     echo "$0 [-n <NAMESPACE ] [-v]"
